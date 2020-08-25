@@ -8,23 +8,14 @@ export default class MainScene extends Phaser.Scene {
         // register needed variables
         const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
-        this.computerPaddleVelocity = new Phaser.Math.Vector2(0, 0)
-        this.computerReactionTime = 2000
-        this.computerError = .4
-        this.paddleHeight = 50
-        this.paddleWidth = 10
-        this.ballRadius = 10
-        this.computerDecidedToMove = false
 
         //create game objects
-        this.ball = this.add.circle(screenCenterX, screenCenterY, this.ballRadius, 0x00ff00, 1).setOrigin(.5, .5)
-        this.playerPaddle = this.add.rectangle(30, screenCenterY, this.paddleWidth, this.paddleHeight, 0x00ff00, 1)
-        this.computerPaddle = this.add.rectangle(this.cameras.main.width - 20, screenCenterY, this.paddleWidth, this.paddleHeight, 0x00ff00, 1)
+        this.ball = this.add.circle(screenCenterX, screenCenterY, 10, 0x00ff00, 1).setOrigin(.5, .5)
+        this.playerPaddle = this.add.rectangle(30, screenCenterY, 10, 50, 0x00ff00, 1)
 
         // registering game objects in the physics system
         this.physics.add.existing(this.ball)
         this.physics.add.existing(this.playerPaddle, true)
-        this.physics.add.existing(this.computerPaddle, true)
 
         //use jsdocs to gain intellisense around the physics bodies
         /** @type {Phaser.Physics.Arcade.Body} */
