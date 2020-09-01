@@ -21,8 +21,6 @@ export default class MainScene extends Phaser.Scene {
         /** @type {Phaser.Physics.Arcade.Body} */
         this.playerPaddleBody = this.playerPaddle.body
         /** @type {Phaser.Physics.Arcade.Body} */
-        this.computerPaddleBody = this.computerPaddle.body
-        /** @type {Phaser.Physics.Arcade.Body} */
         this.ballBody = this.ball.body
 
         // set physics properties
@@ -32,12 +30,9 @@ export default class MainScene extends Phaser.Scene {
 
         // set collider between paddles and ball for physics
         this.physics.add.collider(this.playerPaddle, this.ball, () => {
-            this.ballBody.setVelocity()
-            setTimeout(() => {
-                this.computerDecidedToMove = true
-            }, this.computerReactionTime)
-        })
-        this.physics.add.collider(this.computerPaddle, this.ball, () => this.computerDecidedToMove = false)
+            this.playerPaddle.setFillStyle(this.getRandomColor(), 1)
+            this.ball.setFillStyle(this.getRandomColor(), 1)
+        });
 
         // create Input cursors
         this.cursors = this.input.keyboard.createCursorKeys()
@@ -51,34 +46,18 @@ export default class MainScene extends Phaser.Scene {
             this.playerPaddle.y -= 5
         }
 
-        this.computerDecision()
 
         this.playerPaddleBody.updateFromGameObject()
-        this.computerPaddleBody.updateFromGameObject()
     }
 
-    computerDecision() {
-        if (!this.computerDecidedToMove) {
-            return
+    getRandomColor() {
+        let characters = '0123456789ABCDEF';
+        let color = '0x';
+        for (let i = 0; i < 6; i++) {
+            color += characters[Math.floor(Math.random() * 16)];
         }
-        let top = this.computerPaddle.y + this.paddleHeight / 2 - this.ballRadius
-        let diff = this.ball.y - this.computerPaddle.y
-        const aiSpeed = 4
-        if (Math.abs(diff) < 15) {
-            return
-        }
-        if (diff > 0) {
-            this.computerPaddleVelocity.y = aiSpeed
-            if (this.computerPaddleVelocity.y > 10) {
-                this.computerPaddleVelocity.y = 10
-            }
-        } else if (diff < 0) {
-            this.computerPaddleVelocity.y = -aiSpeed
-            if (this.computerPaddleVelocity.y < -10) {
-                this.computerPaddleVelocity.y = -10
-            }
-        }
-        this.computerPaddle.y += this.computerPaddleVelocity.y
+        return color;
     }
+
 
 }
