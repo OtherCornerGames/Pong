@@ -39,14 +39,11 @@ export default class MainScene extends Phaser.Scene {
     }
 
     update() {
-
         if (this.cursors.down.isDown) {
             this.playerPaddle.y += 5
         } else if (this.cursors.up.isDown) {
             this.playerPaddle.y -= 5
         }
-
-
         this.playerPaddleBody.updateFromGameObject()
     }
 
