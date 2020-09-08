@@ -29,7 +29,7 @@ export default class MainScene extends Phaser.Scene {
         //use jsdocs to gain intellisense around the physics bodies
         /** @type {Phaser.Physics.Arcade.Body} */
         this.playerPaddleBody = this.playerPaddle.body
-        /** @type {Phaser.Physics.Arcade.Body} */
+        // /** @type {Phaser.Physics.Arcade.Body} */
         this.computerPaddleBody = this.computerPaddle.body
         /** @type {Phaser.Physics.Arcade.Body} */
         this.ballBody = this.ball.body
