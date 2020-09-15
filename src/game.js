@@ -19,7 +19,13 @@ const game = new Phaser.Game({
     },
     physics: {
         default: "arcade",
-        arcade: { gravity: { x: 0, y: 0 } }
+        arcade: {
+            gravity: { x: 0, y: 0 },
+            debug: true,
+            debugShowBody: true,
+            debugStaticBodyColor: 0xFF007F,
+            debugBodyColor: 0x00FF00
+        }
     }
 })
 game.scene.add("TitleScene", TitleScene)
