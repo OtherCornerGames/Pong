@@ -8,7 +8,10 @@ export default class MainScene extends Phaser.Scene {
         const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
         this.movementSpeed = 5
-        this.computerDecidedToMove = false
+        this.ballSpeed = 200
+        this.computerReactionTime = 3000
+        this.acceleration = { x: 0, y: 0 }
+        this.computerDecidedToMove = true
 
         //create game objects
         this.ball = this.add.circle(screenCenterX, screenCenterY, 10, 0x00ff00, 1).setOrigin(.5, .5)
@@ -32,19 +35,22 @@ export default class MainScene extends Phaser.Scene {
         // set physics properties
         this.ballBody.setBounce(1, 1)
         this.ballBody.setCollideWorldBounds(true, 1, 1)
-        this.ballBody.setVelocity(-200, -200)
+        this.ballBody.setVelocity(Math.random() > .5 ? 250 : -250, Math.random() > .5 ? 250 : -250)
 
         // set collider between paddles and ball for physics
         this.physics.add.collider(this.playerPaddle, this.ball, () => {
             this.playerPaddle.setFillStyle(this.getRandomColor(), 1)
             this.ball.setFillStyle(this.getRandomColor(), 1)
+            this.increaseDifficulty()
+            this.ballBody.setVelocity(this.ballSpeed, this.ballSpeed);
             setTimeout(() => {
                 this.computerDecidedToMove = true
-            }, 3000);
+            }, this.computerReactionTime);
         });
         this.physics.add.collider(this.computerPaddle, this.ball, () => {
             this.computerPaddle.setFillStyle(this.getRandomColor(), 1)
             this.ball.setFillStyle(this.getRandomColor(), 1)
+            this.increaseDifficulty()
             this.computerDecidedToMove = false
         });
 
@@ -53,7 +59,6 @@ export default class MainScene extends Phaser.Scene {
     }
 
     update() {
-
         if (this.cursors.down.isDown) {
             this.playerPaddle.y += this.movementSpeed
         } else if (this.cursors.up.isDown) {
@@ -63,6 +68,11 @@ export default class MainScene extends Phaser.Scene {
 
         this.playerPaddleBody.updateFromGameObject()
         this.computerPaddleBody.updateFromGameObject()
+    }
+    increaseDifficulty() {
+        this.ballSpeed *= 1.1
+        this.computerReactionTime -= 100
+        this.movementSpeed = this.movementSpeed > 10 ? 10 : this.movementSpeed + 1
     }
 
     getRandomColor() {
